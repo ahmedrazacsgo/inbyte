@@ -1003,7 +1003,21 @@
      if there's room, or gets a dedicated page of its own if not.
      A final page (the question + the buttons) is always appended.
      ============================================================== */
-  const PROPOSAL_TEXT = "I have a  smol smol plan to spend a whole day (one day of the weeknd, or or or could be both days) with you. It goes like this, we wake up to each others voice and i love yous and good meowrnings in our ears. zen we get fewd, have  breakfast together (me bill guts eu coffee, black, iced or not, whichever eu want). zen zen zen we watshh and finsih summer strike (pliiijjj, onliii 3 eps left so 3 hrs onliii, so less less taim). by then it will be evening zere, sauu we gew on a walk, tek zee bewkk, eu ken send me pics after every 2 minutes or so while we stay on the call, or you can just put the video on, totally upto you. zenn zenn zenn ummm, we find a place teu read ze bewkk if eu kens, eu read and me listens. and zen zen zen hehe we gutt ice cream (rocky roads) as we walk beck teu ze house. and zen zen zen uhhh we justt gut beck, kiss, hug, cuddle and uhh ehm ehm.... sleep dummyy. hehe. so deu eu accept or deu eu accept or liek if eu want, liek n pressure, eu ken also accept (please accept). that is if eu is not busy love, since me knows eu are moving house and all, so no pressure at all cupcake, the proposal is for any or every weeknd eu wants teu deu diss wid me. sau deu eu accept or are still liekk uhhh thinking about accepting. let me know.";
+  /* ==============================================================
+     9. LETTER PAGES (manual)
+     The proposal text is split by hand into exactly three pages —
+     edit the strings below directly to change what appears on each
+     page. A fourth page (the closing question + buttons) is always
+     appended after them. Each page's text box scrolls internally if
+     a page ever gets too much text for its height, so nothing is
+     ever silently clipped — but with three fixed pages you're in
+     full control of what lands where.
+     ============================================================== */
+  const LETTER_PAGES = [
+    "I have a  smol smol plan to spend a whole day (one day of the weeknd, or or or could be both days) with you. It goes like this, we wake up to each others voice and i love yous and good meowrnings in our ears. zen we get fewd, have  breakfast together (me bill guts eu coffee, black, iced or not, whichever eu want). zen zen zen we watshh and finsih summer strike (pliiijjj, onliii 3 eps left so 3 hrs onliii, so less less taim).",
+    "by then it will be evening zere, sauu we gew on a walk, tek zee bewkk, eu ken send me pics after every 2 minutes or so while we stay on the call, or you can just put the video on, totally upto you. zenn zenn zenn ummm, we find a place teu read ze bewkk if eu kens, eu read and me listens. and zen zen zen hehe we gutt ice cream (rocky roads) as we walk beck teu ze house. and zen zen zen uhhh we justt gut beck, kiss, hug, cuddle and uhh ehm ehm.... sleep dummyy. hehe.",
+    "so deu eu accept or deu eu accept or liek if eu want, liek no pressure, eu ken also accept (please accept). that is if eu is not busy love, since me knows eu are moving house and all, so no pressure at all cupcake, the proposal is for any or every weeknd eu wants teu deu diss wid me. sau deu eu accept or are still liekk uhhh thinking about accepting. let me know."
+  ];
 
   function buildLetterPages() {
     const pagesRoot = document.getElementById('letter-pages');
@@ -1020,80 +1034,10 @@
 
     pagesRoot.innerHTML = '';
 
-    // ---------- measure the real available text box ----------
-    function measureNoteBox(withTitle) {
-      const probe = document.createElement('div');
-      probe.className = 'letter-page text-page';
-      probe.style.visibility = 'hidden';
-      pagesRoot.appendChild(probe);
-      if (withTitle) probe.appendChild(titleNode.cloneNode(true));
-      const body = document.createElement('div');
-      body.className = 'letter-body';
-      const note = document.createElement('div');
-      note.className = 'letter-note';
-      body.appendChild(note);
-      probe.appendChild(body);
-      const box = { width: note.clientWidth, height: Math.max(40, note.clientHeight - 6) };
-      pagesRoot.removeChild(probe);
-      return box;
-    }
-
-    const boxWithTitle = measureNoteBox(true);
-    const boxNoTitle    = measureNoteBox(false);
-
-    // ---------- hidden sizer used to measure word-wrapped text ----------
-    const sizer = document.createElement('div');
-    sizer.className = 'hand-text';
-    sizer.style.position = 'fixed';
-    sizer.style.visibility = 'hidden';
-    sizer.style.pointerEvents = 'none';
-    sizer.style.left = '-9999px';
-    sizer.style.top = '0';
-    sizer.style.height = 'auto';
-    sizer.style.width = boxNoTitle.width + 'px';
-    document.body.appendChild(sizer);
-
-    const words = PROPOSAL_TEXT.split(/\s+/).filter(Boolean);
-
-    function wordsThatFit(startIdx, maxHeight) {
-      if (startIdx >= words.length) return 0;
-      let count = 0;
-      for (let n = 1; n <= words.length - startIdx; n++) {
-        sizer.textContent = words.slice(startIdx, startIdx + n).join(' ');
-        if (sizer.offsetHeight > maxHeight) break;
-        count = n;
-      }
-      return Math.max(count, 1);
-    }
-
-    // ---------- split the paragraph across as many pages as needed ----------
-    const textChunks = [];
-    let idx = 0;
-    let firstPage = true;
-    while (idx < words.length) {
-      const box = firstPage ? boxWithTitle : boxNoTitle;
-      const n = wordsThatFit(idx, box.height);
-      textChunks.push(words.slice(idx, idx + n).join(' '));
-      idx += n;
-      firstPage = false;
-    }
-    if (!textChunks.length) textChunks.push('');
-
-    // does the love-line fit under the last chunk, or does it need its
-    // own page? Measured against the same box the last chunk used.
-    const lastChunkIsFirst = textChunks.length === 1;
-    const lastBox = lastChunkIsFirst ? boxWithTitle : boxNoTitle;
-    sizer.textContent = textChunks[textChunks.length - 1];
-    const usedHeight = sizer.offsetHeight;
-    const loveLineHeight = 74; // generous estimate of the styled love-line's rendered height
-    const loveOnOwnPage = (lastBox.height - usedHeight) < loveLineHeight;
-
-    sizer.remove();
-
-    // ---------- build the real pages ----------
+    // ---------- build the three proposal-text pages ----------
     const pageEls = [];
 
-    textChunks.forEach((chunk, i) => {
+    LETTER_PAGES.forEach((chunk, i) => {
       const page = document.createElement('div');
       page.className = 'letter-page text-page';
 
@@ -1113,8 +1057,8 @@
       p.textContent = chunk;
       note.appendChild(p);
 
-      const isLastTextChunk = (i === textChunks.length - 1);
-      if (isLastTextChunk && !loveOnOwnPage) {
+      const isLastTextChunk = (i === LETTER_PAGES.length - 1);
+      if (isLastTextChunk) {
         const love = document.createElement('p');
         love.className = 'love-words';
         love.innerHTML = 'I LOVE YOU MY CUTIII <span class="love-heart" aria-hidden="true">❤</span>';
@@ -1125,16 +1069,6 @@
       page.appendChild(body);
       pageEls.push(page);
     });
-
-    if (loveOnOwnPage) {
-      const page = document.createElement('div');
-      page.className = 'letter-page love-page';
-      const love = document.createElement('p');
-      love.className = 'love-words standalone';
-      love.innerHTML = 'I LOVE YOU MY CUTIII <span class="love-heart" aria-hidden="true">❤</span>';
-      page.appendChild(love);
-      pageEls.push(page);
-    }
 
     // ---------- the final question / buttons page ----------
     const questionPage = document.createElement('div');
@@ -1176,7 +1110,7 @@
         next.type = 'button';
         next.className = 'page-flip-btn';
         next.setAttribute('aria-label', 'Turn the page');
-        next.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        next.innerHTML = '<svg viewBox="0 0 46 28" width="40" height="24" aria-hidden="true"><path class="sketch-shaft" d="M3 20 C 12 8, 24 6, 33 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="sketch-head" d="M25 6.5 C 29.5 9, 33.5 11.5, 36 13.5 C 33.5 15.5, 29 18.5, 24.5 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
         next.addEventListener('click', () => turnPage(i, i + 1));
         page.appendChild(next);
       }
@@ -1185,7 +1119,7 @@
         back.type = 'button';
         back.className = 'page-flip-btn back';
         back.setAttribute('aria-label', 'Go back a page');
-        back.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        back.innerHTML = '<svg viewBox="0 0 46 28" width="34" height="20" aria-hidden="true"><path class="sketch-shaft" d="M43 20 C 34 8, 22 6, 13 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="sketch-head" d="M21 6.5 C 16.5 9, 12.5 11.5, 10 13.5 C 12.5 15.5, 17 18.5, 21.5 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
         back.addEventListener('click', () => turnPage(i, i - 1));
         page.appendChild(back);
       }
@@ -1264,11 +1198,6 @@
         convinceText.hidden = false;
         requestAnimationFrame(() => convinceText.classList.add('show'));
       }
-
-      setTimeout(() => {
-        refuseBtn.dataset.state = 'redirect';
-        refuseBtn.textContent = '🌼 Try the other buttons?';
-      }, 1600);
     } else {
       document.querySelectorAll('.yes-btn').forEach(btn => {
         btn.classList.remove('spotlight');

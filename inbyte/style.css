@@ -795,7 +795,10 @@ p{ margin:0; }
   position:relative;
   flex:1;
   min-height:0;
-  overflow:hidden;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
   padding-top:4px;
   padding-right:6px;
   padding-bottom:8px;
@@ -805,6 +808,8 @@ p{ margin:0; }
   );
   background-position: 0 6px;
 }
+
+.letter-note::-webkit-scrollbar{ display:none; width:0; height:0; }
 
 .hand-text{
   font-family: var(--font-hand);
@@ -851,43 +856,61 @@ p{ margin:0; }
   50%{ transform: scale(1.2); }
 }
 
-/* the golden arrow that turns the page forward */
+/* the hand-sketched ink arrow that turns the page forward — drawn
+   like a quick doodle in the margin rather than a UI control, so it
+   reads as part of the letter instead of sitting on top of it */
 .page-flip-hint{
-  position:absolute; right:62px; bottom:110px;
+  position:absolute; right:6px; bottom:104px;
   font-family: var(--font-hand);
-  font-size:.9rem;
-  color: rgba(91,70,54,.5);
+  font-size:.85rem;
+  color: rgba(91,70,54,.45);
   transform: rotate(-4deg);
   pointer-events:none;
   z-index:5;
 }
 .page-flip-btn{
-  position:absolute; right:14px; bottom:80px;
-  width:46px; height:46px;
-  border-radius:50%;
+  position:absolute; right:10px; bottom:60px;
+  width:52px; height:34px;
+  padding:6px 6px 12px 6px;
   display:flex; align-items:center; justify-content:center;
-  color:#4a3521;
-  background: linear-gradient(160deg, #fff3c4, var(--ticket) 60%, #e8b74a);
-  box-shadow: 0 8px 18px rgba(0,0,0,.28), 0 0 12px rgba(255,213,74,.4), inset 0 1px 1px rgba(255,255,255,.6);
-  transition: transform .18s ease, box-shadow .2s ease;
-  animation: page-flip-pulse 2.6s ease-in-out infinite;
+  color: rgba(92,36,23,.55);
+  background:none;
+  border:none;
+  box-shadow:none;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.5));
+  transition: transform .2s ease, color .2s ease;
+  animation: page-flip-sway 3.4s ease-in-out infinite;
   z-index:5;
 }
-.page-flip-btn:hover{ transform: translateY(-2px) scale(1.05); }
-.page-flip-btn:active{ transform: scale(.92); }
+.page-flip-btn svg{ overflow: visible; }
+.page-flip-btn .sketch-shaft,
+.page-flip-btn .sketch-head{
+  stroke-dasharray: 70;
+  stroke-dashoffset: 70;
+  animation: sketch-draw 900ms ease-out forwards;
+}
+.page-flip-btn .sketch-head{ animation-delay: 120ms; }
+.page-flip-btn:hover,
+.page-flip-btn:focus-visible{
+  color:#b64040;
+  transform: translateY(-2px) rotate(-3deg) scale(1.08);
+}
+.page-flip-btn:active{ transform: translateY(0) rotate(1deg) scale(.94); }
 .page-flip-btn.back{
-  right:auto; left:12px; bottom:70px;
-  width:36px; height:36px;
-  background: rgba(91,70,54,.08);
-  border: 1.5px solid rgba(91,70,54,.35);
-  box-shadow:none;
-  color:#5c2417;
+  right:auto; left:14px; bottom:56px;
+  width:42px; height:28px;
+  padding:6px;
+  color: rgba(91,70,54,.4);
   animation:none;
 }
-.page-flip-btn.back:hover{ background: rgba(91,70,54,.16); }
-@keyframes page-flip-pulse{
-  0%,100%{ box-shadow: 0 8px 18px rgba(0,0,0,.28), 0 0 8px rgba(255,213,74,.35), inset 0 1px 1px rgba(255,255,255,.6); }
-  50%{ box-shadow: 0 8px 18px rgba(0,0,0,.28), 0 0 20px rgba(255,213,74,.65), inset 0 1px 1px rgba(255,255,255,.6); }
+.page-flip-btn.back:hover,
+.page-flip-btn.back:focus-visible{ color:#8a3a2a; transform: translateY(-1px) rotate(3deg) scale(1.06); }
+@keyframes page-flip-sway{
+  0%,100%{ transform: rotate(-3deg); }
+  50%{ transform: rotate(1deg) translateX(2px); }
+}
+@keyframes sketch-draw{
+  to{ stroke-dashoffset: 0; }
 }
 
 .page-back-inner{
