@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>For Issu, with love</title>
+
+<!-- Handwritten display face + warm serif body face -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     THE STAGE — a fixed mobile-sized frame (390 x 844) that is
+     centered on larger screens. Nothing inside this frame scrolls.
+     ============================================================ -->
+<div id="stage">
+
+  <!-- ---------- Living night background ---------- -->
+  <div id="aurora" aria-hidden="true"></div>
+  <div id="sky" aria-hidden="true">
+    <!-- stars, dust and the shooting star are injected by script.js -->
+  </div>
+
+  <div id="fireflies" aria-hidden="true"></div>
+  <div id="petals" aria-hidden="true"></div>
+
+  <svg id="moon" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#FFF6D7" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#FFF6D7" stop-opacity="0"/>
+      </radialGradient>
+      <mask id="crescentMask">
+        <rect x="0" y="0" width="100" height="100" fill="white"/>
+        <circle cx="63" cy="38" r="27" fill="black"/>
+      </mask>
+    </defs>
+    <circle cx="50" cy="50" r="48" fill="url(#moonGlow)"/>
+    <circle cx="46" cy="46" r="26" fill="#FFF6D7" mask="url(#crescentMask)"/>
+  </svg>
+
+  <div id="sun" aria-hidden="true"></div>
+
+  <div id="dawn-scene" aria-hidden="true">
+    <div class="sun-disc"></div>
+    <svg class="hills" viewBox="0 0 390 200" preserveAspectRatio="none">
+      <path class="hill hill-back" d="M0,120 C55,95 95,135 150,105 C205,75 245,120 300,95 C335,80 365,100 390,90 L390,200 L0,200 Z"/>
+      <path class="hill hill-mid" d="M0,150 C50,120 100,155 165,120 C220,92 260,135 320,110 C350,97 370,112 390,105 L390,200 L0,200 Z"/>
+      <path class="hill hill-front" d="M0,178 C60,150 110,180 175,148 C230,122 275,160 330,138 C355,127 375,140 390,135 L390,200 L0,200 Z"/>
+    </svg>
+  </div>
+
+  <div id="vignette" aria-hidden="true"></div>
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- ---------- Music toggle ---------- -->
+  <button id="music-btn" type="button" aria-label="Play soft music" aria-pressed="false">
+    <svg viewBox="0 0 24 24" class="icon-note"><path d="M9 18V5l11-2v13" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/></svg>
+  </button>
+
+  <!-- ---------- Corner daisies ---------- -->
+  <div class="daisy-cluster" id="daisies-bl" aria-hidden="true"></div>
+  <div class="daisy-cluster" id="daisies-br" aria-hidden="true"></div>
+  <div class="daisy-cluster" id="daisies-bottom" aria-hidden="true"></div>
+
+  <!-- ---------- Intro whisper ---------- -->
+  <p id="intro-text" class="handwritten">A Proposal, For My Love, With My Love&hellip;</p>
+
+  <!-- ============================================================
+       GOLDEN TICKET
+       ============================================================ -->
+  <div id="ticket-scene">
+    <div id="ticket-wrap">
+      <span class="notch left" aria-hidden="true"></span>
+      <span class="notch right" aria-hidden="true"></span>
+      <div id="ticket">
+        <span class="perf left" aria-hidden="true"></span>
+        <span class="perf right" aria-hidden="true"></span>
+
+        <div class="ticket-half ticket-top">
+          <p class="ticket-eyebrow">golden proposal</p>
+          <h1 class="ticket-title">Spend A Beautiful Day With Me</h1>
+          <div class="flourish" aria-hidden="true"><span></span>❖<span></span></div>
+          <p class="ticket-for">for</p>
+          <p class="ticket-name">
+            My Sweet Issu
+            <svg class="doodle-heart" viewBox="0 0 22 20" width="16" height="15" aria-hidden="true">
+              <path d="M11 17 C 2 11, 1 4, 6 2 C 9 1, 11 3, 11 6 C 11 3, 13 1, 16 2 C 21 4, 20 11, 11 17 Z"
+                fill="none" stroke="#b64040" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </p>
+          <svg class="doodle-underline" viewBox="0 0 90 10" aria-hidden="true">
+            <path d="M3 6 C 20 2, 40 9, 60 4 C 70 2, 80 5, 87 3" fill="none" stroke="#b64040" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="tear-line" aria-hidden="true"></div>
+
+        <div class="ticket-half ticket-bottom">
+          <p class="ticket-issued">issued by</p>
+          <button id="issuer-btn" type="button" class="issuer-name">Your Razey ❤</button>
+        </div>
+
+      </div>
+      <div id="ticket-firefly-perch" aria-hidden="true"></div>
+    </div>
+
+    <button id="open-ticket-btn" class="gold-btn" type="button">Open Ticket</button>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <div id="fx-layer" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       THE LETTER — a little handmade book. The proposal text is
+       measured and paginated live by script.js (buildLetterPages)
+       so it always fits, however many pages that takes. Each page
+       turns with a real page-flip animation; the closing question
+       and buttons live on the final page.
+       ============================================================ -->
+  <div id="letter-scene" hidden>
+    <div id="letter">
+
+      <span class="notebook-holes" aria-hidden="true"></span>
+
+      <!-- Source assets — script.js moves these into the generated
+           pages once it knows how many pages it needs. Kept in a
+           hidden holding pen here so nothing flashes beforehand. -->
+      <div id="letter-assets" hidden>
+        <h2 class="letter-title">Dear Issu 🌼</h2>
+
+        <svg class="doodle-heart-bg" viewBox="0 0 200 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <path d="M100 168 C 38 122, 8 82, 9 50 C 10 18, 37 4, 61 16 C 77 24, 90 38, 100 52 C 111 37, 126 22, 143 15 C 168 4, 191 20, 190 51 C 189 82, 158 123, 100 168 Z"
+            fill="none" stroke="#8a3a2a" stroke-width="5"/>
+        </svg>
+
+        <svg class="doodle-cat" viewBox="0 0 40 40" aria-hidden="true">
+          <path d="M10 14 L13 5 L17 13" fill="none" stroke="#5c2417" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M30 14 L27 5 L23 13" fill="none" stroke="#5c2417" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="18" r="9" fill="none" stroke="#5c2417" stroke-width="1.3"/>
+          <path d="M11 24 C 9 32, 14 37, 20 37 C 26 37, 31 32, 29 24" fill="none" stroke="#5c2417" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M28 30 C 34 31, 36 24, 32 20" fill="none" stroke="#5c2417" stroke-width="1.3" stroke-linecap="round"/>
+          <circle cx="17" cy="17" r="0.9" fill="#5c2417"/>
+          <circle cx="23" cy="17" r="0.9" fill="#5c2417"/>
+          <path d="M18.3 21 Q20 22.6 21.7 21" fill="none" stroke="#5c2417" stroke-width="1" stroke-linecap="round"/>
+          <path d="M10 19.5 L15 20 M10 22.5 L15 21.8 M30 19.5 L25 20 M30 22.5 L25 21.8" stroke="#5c2417" stroke-width="0.8" stroke-linecap="round"/>
+        </svg>
+
+        <svg class="doodle-cup" viewBox="0 0 30 30" aria-hidden="true">
+          <path d="M6 11 L8 23 C 8 25.5, 22 25.5, 22 23 L24 11 Z" fill="none" stroke="#5c2417" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M24 13 C 29 13, 29 20, 24 20" fill="none" stroke="#5c2417" stroke-width="1.2"/>
+          <path d="M11 9 C 9 7, 13 5, 11 3" fill="none" stroke="#5c2417" stroke-width="1" stroke-linecap="round"/>
+          <path d="M16 9 C 14 7, 18 5, 16 3" fill="none" stroke="#5c2417" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+
+        <svg class="doodle-flower" viewBox="0 0 30 40" aria-hidden="true">
+          <path d="M15 39 L15 21" stroke="#5c2417" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+          <path d="M15 29 C 11 27, 9 31, 12 33" stroke="#5c2417" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+          <g fill="none" stroke="#5c2417" stroke-width="1.1">
+            <ellipse cx="15" cy="9" rx="3.2" ry="5.8"/>
+            <ellipse cx="15" cy="9" rx="3.2" ry="5.8" transform="rotate(72 15 15)"/>
+            <ellipse cx="15" cy="9" rx="3.2" ry="5.8" transform="rotate(144 15 15)"/>
+            <ellipse cx="15" cy="9" rx="3.2" ry="5.8" transform="rotate(216 15 15)"/>
+            <ellipse cx="15" cy="9" rx="3.2" ry="5.8" transform="rotate(288 15 15)"/>
+          </g>
+          <circle cx="15" cy="15" r="2.3" fill="none" stroke="#5c2417" stroke-width="1.1"/>
+        </svg>
+
+        <svg class="doodle-moon" viewBox="0 0 30 30" aria-hidden="true">
+          <path d="M18 6 C 12 6, 8 11, 8 16 C 8 21, 12 26, 18 26 C 14 23, 12 20, 12 16 C 12 12, 14 9, 18 6 Z" fill="none" stroke="#5c2417" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M24 8 L25 11 L28 12 L25 13 L24 16 L23 13 L20 12 L23 11 Z" fill="none" stroke="#5c2417" stroke-width="1"/>
+        </svg>
+
+        <div id="letter-daisies" aria-hidden="true"></div>
+
+        <div class="page-back-inner">
+          <p class="letter-closing hand-text">So&hellip; will you spend this day with me?</p>
+          <svg class="doodle-underline center" viewBox="0 0 120 10" aria-hidden="true">
+            <path d="M4 5 C 28 1, 55 9, 80 4 C 92 2, 106 6, 116 3" fill="none" stroke="#b64040" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+
+          <div class="letter-buttons">
+            <button class="yes-btn" type="button" data-yes>🌼 Yes, please.</button>
+            <button id="refuse-btn" class="refuse-btn" type="button">If you really want to refuse&hellip;</button>
+            <button class="yes-btn" type="button" data-yes>🌻 Please, yes.</button>
+          </div>
+
+          <p id="convince-text" class="handwritten" hidden>I brought extra flowers because I really hope you'll say yes.</p>
+        </div>
+      </div>
+
+      <!-- Pages are built here entirely by script.js's buildLetterPages() -->
+      <div id="letter-pages"></div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FINAL CARD
+       ============================================================ -->
+  <div id="final-card" hidden>
+    <div id="final-inner">
+      <span class="final-corner tr" aria-hidden="true">✦</span>
+      <span class="final-corner bl" aria-hidden="true">✦</span>
+      <span class="final-corner br" aria-hidden="true">✦</span>
+      <p class="final-heart">❤</p>
+      <h2 class="final-title">Ticket Activated</h2>
+
+      <div class="final-row"><span>Holder</span><strong>Issu</strong></div>
+      <div class="final-row"><span>Accompanied by</span><strong>Razey</strong></div>
+      <div class="final-row"><span>Status</span><strong>Accepted 🌼</strong></div>
+      <div class="final-row"><span>Valid for</span><strong>One unforgettable day</strong></div>
+
+      <p class="final-thanks">Thank you for making my little ticket worth making.</p>
+      <p class="final-signoff">I can't wait.<br>❤</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
