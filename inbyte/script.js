@@ -1029,6 +1029,10 @@
     const heartBgNode   = document.querySelector('.doodle-heart-bg');
     const flowerNode    = document.querySelector('.doodle-flower');
     const moonNode      = document.querySelector('.doodle-moon');
+    const starNode      = document.querySelector('.doodle-star');
+    const pawNode       = document.querySelector('.doodle-paw');
+    const cloudNode     = document.querySelector('.doodle-cloud');
+    const butterflyNode = document.querySelector('.doodle-butterfly');
     const questionInner = document.querySelector('.page-back-inner');
     const daisiesHost   = document.getElementById('letter-daisies');
 
@@ -1046,6 +1050,14 @@
         page.appendChild(catNode);
         page.appendChild(cupNode);
         page.appendChild(heartBgNode);
+      }
+      if (i === 1) {
+        page.appendChild(starNode);
+        page.appendChild(pawNode);
+      }
+      if (i === 2) {
+        page.appendChild(cloudNode);
+        page.appendChild(butterflyNode);
       }
 
       const body = document.createElement('div');
@@ -1198,6 +1210,11 @@
         convinceText.hidden = false;
         requestAnimationFrame(() => convinceText.classList.add('show'));
       }
+
+      setTimeout(() => {
+        refuseBtn.dataset.state = 'redirect';
+        refuseBtn.textContent = '🌼 Try the other buttons?';
+      }, 1600);
     } else {
       document.querySelectorAll('.yes-btn').forEach(btn => {
         btn.classList.remove('spotlight');
@@ -1229,6 +1246,7 @@
     }, 1900);
     setTimeout(() => {
       letterScene.hidden = true;
+      ticketScene.hidden = true;
     }, 2750);
 
     setTimeout(() => {

@@ -563,6 +563,38 @@ p{ margin:0; }
   pointer-events:none;
   z-index:2;
 }
+.doodle-star{
+  position:absolute; top:14px; right:16px;
+  width:24px; height:24px;
+  opacity:.55;
+  transform: rotate(14deg);
+  pointer-events:none;
+  z-index:2;
+}
+.doodle-paw{
+  position:absolute; top:40%; left:8px;
+  width:32px; height:32px;
+  opacity:.35;
+  transform: rotate(-12deg);
+  pointer-events:none;
+  z-index:2;
+}
+.doodle-cloud{
+  position:absolute; top:16px; left:14px;
+  width:46px; height:27px;
+  opacity:.32;
+  transform: rotate(-6deg);
+  pointer-events:none;
+  z-index:2;
+}
+.doodle-butterfly{
+  position:absolute; top:44%; right:10px;
+  width:27px; height:22px;
+  opacity:.5;
+  transform: rotate(11deg);
+  pointer-events:none;
+  z-index:2;
+}
 
 .tear-line{
   position:relative;
@@ -986,6 +1018,7 @@ p{ margin:0; }
   padding: 24px;
   opacity:0;
   transition: opacity 1.4s ease;
+  transform: translateY(-30px);
 }
 #final-card.show{ opacity:1; }
 #final-inner{
